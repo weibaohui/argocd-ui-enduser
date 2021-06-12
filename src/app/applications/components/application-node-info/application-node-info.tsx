@@ -18,12 +18,12 @@ export const ApplicationNodeInfo = (props: {
 }) => {
     const attributes: {title: string; value: any}[] = [
         {title: 'KIND', value: props.node.kind},
-        {title: 'NAME', value: props.node.name},
-        {title: 'NAMESPACE', value: props.node.namespace}
+        {title: '名称', value: props.node.name},
+        {title: '命名空间NS', value: props.node.namespace}
     ];
     if (props.node.createdAt) {
         attributes.push({
-            title: 'CREATED_AT',
+            title: '创建时间',
             value: moment
                 .utc(props.node.createdAt)
                 .local()
@@ -32,7 +32,7 @@ export const ApplicationNodeInfo = (props: {
     }
     if ((props.node.images || []).length) {
         attributes.push({
-            title: 'IMAGES',
+            title: '镜像',
             value: (
                 <div className='application-node-info__labels'>
                     {(props.node.images || []).sort().map(image => (
@@ -47,25 +47,25 @@ export const ApplicationNodeInfo = (props: {
     if (props.live) {
         if (props.node.kind === 'Pod') {
             const {reason, message} = getPodStateReason(props.live);
-            attributes.push({title: 'STATE', value: reason});
+            attributes.push({title: '状态', value: reason});
             if (message) {
-                attributes.push({title: 'STATE DETAILS', value: message});
+                attributes.push({title: '状态 明细', value: message});
             }
         } else if (props.node.kind === 'Service') {
-            attributes.push({title: 'TYPE', value: props.live.spec.type});
+            attributes.push({title: '类型', value: props.live.spec.type});
             let hostNames = '';
             const status = props.live.status;
             if (status && status.loadBalancer && status.loadBalancer.ingress) {
                 hostNames = (status.loadBalancer.ingress || []).map((item: any) => item.hostname || item.ip).join(', ');
             }
-            attributes.push({title: 'HOSTNAMES', value: hostNames});
+            attributes.push({title: '主机名称', value: hostNames});
         }
     }
 
     if (props.controlled) {
         if (!props.controlled.summary.hook) {
             attributes.push({
-                title: 'STATUS',
+                title: '状态',
                 value: (
                     <span>
                         <ComparisonStatusIcon status={props.controlled.summary.status} resource={props.controlled.summary} label={true} />
@@ -75,7 +75,7 @@ export const ApplicationNodeInfo = (props: {
         }
         if (props.controlled.summary.health !== undefined) {
             attributes.push({
-                title: 'HEALTH',
+                title: '健康状态',
                 value: (
                     <span>
                         <HealthStatusIcon state={props.controlled.summary.health} /> {props.controlled.summary.health.status}
@@ -91,11 +91,12 @@ export const ApplicationNodeInfo = (props: {
     const tabs: Tab[] = [
         {
             key: 'manifest',
-            title: 'Live Manifest',
+            title: '实时资源描述',
             content: (
                 <YamlEditor
                     input={props.live}
-                    hideModeButtons={!props.live}
+                    hideModeButtons= {true}
+                    initialEditMode={false}
                     onSave={(patch, patchType) => services.applications.patchResource(props.application.metadata.name, props.node, patch, patchType)}
                 />
             )
@@ -105,12 +106,12 @@ export const ApplicationNodeInfo = (props: {
         tabs.push({
             key: 'diff',
             icon: 'fa fa-file-medical',
-            title: 'Diff',
+            title: '差异对比',
             content: <ApplicationResourcesDiff states={[props.controlled.state]} />
         });
         tabs.push({
             key: 'desiredManifest',
-            title: 'Desired Manifest',
+            title: '声明定义',
             content: <YamlEditor input={props.controlled.state.targetState} hideModeButtons={true} />
         });
     }

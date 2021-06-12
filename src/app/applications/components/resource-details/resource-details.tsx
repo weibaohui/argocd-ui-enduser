@@ -246,17 +246,17 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
                                     onClick={() => appContext.navigation.goto('.', {deploy: AppUtils.nodeKey(selectedNode)})}
                                     style={{marginLeft: 'auto', marginRight: '5px'}}
                                     className='argo-button argo-button--base'>
-                                    <i className='fa fa-sync-alt' /> SYNC
+                                    <i className='fa fa-sync-alt' /> 同步
                                 </button>
                                 <button onClick={() => AppUtils.deletePopup(appContext, selectedNode, application)} className='argo-button argo-button--base'>
-                                    <i className='fa fa-trash' /> DELETE
+                                    <i className='fa fa-trash' /> 删除
                                 </button>
                             </div>
                             <Tabs
                                 navTransparent={true}
                                 tabs={getResourceTabs(selectedNode, data.liveState, data.podState, data.events, [
                                     {
-                                        title: 'SUMMARY',
+                                        title: '概述',
                                         icon: 'fa fa-file-alt',
                                         key: 'summary',
                                         content: <ApplicationNodeInfo application={application} live={data.liveState} controlled={data.controlledState} node={selectedNode} />

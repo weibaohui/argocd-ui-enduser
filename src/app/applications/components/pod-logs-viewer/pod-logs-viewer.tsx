@@ -26,7 +26,7 @@ export interface PodLogsProps {
 
 export const PodsLogsViewer = (props: PodLogsProps & {fullscreen?: boolean}) => {
     if (!props.containerName || props.containerName === '') {
-        return <div>Pod does not have container with name {props.containerName}</div>;
+        return <div>Pod 里没有这个容器名： {props.containerName}</div>;
     }
 
     let loader: DataLoader<models.LogEntry[], string>;
@@ -65,6 +65,7 @@ export const PodsLogsViewer = (props: PodLogsProps & {fullscreen?: boolean}) => 
         return () => clearTimeout(to);
     }, [filterText]);
 
+    // todo 权限校验
     const fullscreenURL =
         `/applications/${props.applicationName}/${props.namespace}/${props.containerName}/logs?` +
         `podName=${props.podName}&group=${props.group}&kind=${props.kind}&name=${props.name}`;
@@ -124,7 +125,7 @@ export const PodsLogsViewer = (props: PodLogsProps & {fullscreen?: boolean}) => 
                                 }
                                 loader.reload();
                             }}>
-                            FOLLOW {prefs.appDetails.followLogs && <i className='fa fa-check' />}
+                            跟随 {prefs.appDetails.followLogs && <i className='fa fa-check' />}
                         </button>
                         <button
                             className='argo-button argo-button--base-o'
@@ -146,7 +147,7 @@ export const PodsLogsViewer = (props: PodLogsProps & {fullscreen?: boolean}) => 
                                 );
                                 window.open(downloadURL, '_blank');
                             }}>
-                            DOWNLOAD
+                            下载日志
                         </button>
                         {!props.fullscreen && (
                             <Link to={fullscreenURL} target='_blank' className='argo-button argo-button--base'>
@@ -164,7 +165,7 @@ export const PodsLogsViewer = (props: PodLogsProps & {fullscreen?: boolean}) => 
                             </Tooltip>
                             <input
                                 type='text'
-                                placeholder='Filter string'
+                                placeholder='请输入关键字'
                                 className='argo-field'
                                 value={filterText}
                                 onChange={e => setFilterText(e.target.value)}
