@@ -170,17 +170,18 @@ export class ApplicationDetails extends React.Component<RouteComponentProps<{nam
                             return (
                                 <div className='application-details'>
                                     <Page
-                                        title='应用管理'
+                                        title={null}
                                         toolbar={{
                                             filter,
-                                            breadcrumbs: [{title: '应用管理', path: '/applications'}, {title: this.props.match.params.name}],
+                                            // breadcrumbs: [{title: '应用管理2', path: '/applications'}, {title: this.props.match.params.name}],
+                                            breadcrumbs: [],
                                             actionMenu: {items: this.getApplicationActionMenu(application)},
                                             tools: (
                                                 <React.Fragment key='app-list-tools'>
                                                     <div className='application-details__view-type'>
                                                         <i
                                                             className={classNames('fa fa-sitemap', {selected: pref.view === 'tree'})}
-                                                            title='Tree'
+                                                            title='树状'
                                                             onClick={() => {
                                                                 this.appContext.apis.navigation.goto('.', {view: 'tree'});
                                                                 services.viewPreferences.updatePreferences({appDetails: {...pref, view: 'tree'}});
@@ -196,7 +197,7 @@ export class ApplicationDetails extends React.Component<RouteComponentProps<{nam
                                                         />
                                                         <i
                                                             className={classNames('fa fa-network-wired', {selected: pref.view === 'network'})}
-                                                            title='Network'
+                                                            title='网络'
                                                             onClick={() => {
                                                                 this.appContext.apis.navigation.goto('.', {view: 'network'});
                                                                 services.viewPreferences.updatePreferences({appDetails: {...pref, view: 'network'}});
@@ -204,7 +205,7 @@ export class ApplicationDetails extends React.Component<RouteComponentProps<{nam
                                                         />
                                                         <i
                                                             className={classNames('fa fa-th-list', {selected: pref.view === 'list'})}
-                                                            title='List'
+                                                            title='列表'
                                                             onClick={() => {
                                                                 this.appContext.apis.navigation.goto('.', {view: 'list'});
                                                                 services.viewPreferences.updatePreferences({appDetails: {...pref, view: 'list'}});
@@ -234,7 +235,7 @@ export class ApplicationDetails extends React.Component<RouteComponentProps<{nam
                                                             services.viewPreferences.updatePreferences({appDetails: {...pref, orphanedResources: val}});
                                                         }}
                                                     />{' '}
-                                                    <label htmlFor='orphanedFilter'>SHOW ORPHANED</label>
+                                                    <label htmlFor='orphanedFilter'>显示孤本</label>
                                                 </div>
                                             )}
                                             {((pref.view === 'tree' || pref.view === 'network') && (
@@ -393,14 +394,7 @@ export class ApplicationDetails extends React.Component<RouteComponentProps<{nam
 
     private getApplicationActionMenu(app: appModels.Application) {
         const refreshing = app.metadata.annotations && app.metadata.annotations[appModels.AnnotationRefreshKey];
-        const fullName = AppUtils.nodeKey({group: 'argoproj.io', kind: app.kind, name: app.metadata.name, namespace: app.metadata.namespace});
         return [
-            {
-                iconClassName: 'fa fa-file-medical',
-                title: <span className='show-for-large'>应用版本</span>,
-                action: () => this.selectNode(fullName, 0, 'diff'),
-                disabled: app.status.sync.status === appModels.SyncStatuses.Synced
-            },
             {
                 iconClassName: 'fa fa-sync',
                 title: <span className='show-for-large'>同步</span>,
@@ -408,30 +402,24 @@ export class ApplicationDetails extends React.Component<RouteComponentProps<{nam
             },
             {
                 iconClassName: 'fa fa-info-circle',
-                title: <span className='show-for-large'>Sync Status</span>,
+                title: <span className='show-for-large'>同步状态</span>,
                 action: () => this.setOperationStatusVisible(true),
                 disabled: !app.status.operationState
             },
             {
-                iconClassName: 'fa fa-history',
-                title: <span className='show-for-large'>History and rollback</span>,
-                action: () => this.setRollbackPanelVisible(0),
-                disabled: !app.status.operationState
-            },
-            {
                 iconClassName: 'fa fa-times-circle',
-                title: <span className='show-for-large'>删除--隐藏</span>,
+                title: <span className='show-for-large'>删除</span>,
                 action: () => this.deleteApplication()
             },
             {
                 iconClassName: classNames('fa fa-redo', {'status-icon--spin': !!refreshing}),
                 title: (
                     <React.Fragment>
-                        <span className='show-for-large'>Refresh</span>{' '}
+                        <span className='show-for-large'>刷新</span>{' '}
                         <DropDownMenu
                             items={[
                                 {
-                                    title: 'Hard Refresh',
+                                    title: '强制刷新',
                                     action: () => !refreshing && services.applications.get(app.metadata.name, 'hard')
                                 }
                             ]}
@@ -563,7 +551,7 @@ export class ApplicationDetails extends React.Component<RouteComponentProps<{nam
     private async rollbackApplication(revisionHistory: appModels.RevisionHistory, application: appModels.Application) {
         try {
             const needDisableRollback = application.spec.syncPolicy && application.spec.syncPolicy.automated;
-            let confirmationMessage = `Are you sure you want to rollback application '${this.props.match.params.name}'?`;
+            let confirmationMessage = `确认回滚 '${this.props.match.params.name}'?`;
             if (needDisableRollback) {
                 confirmationMessage = `Auto-Sync needs to be disabled in order for rollback to occur.
 Are you sure you want to disable auto-sync and rollback application '${this.props.match.params.name}'?`;
@@ -582,7 +570,7 @@ Are you sure you want to disable auto-sync and rollback application '${this.prop
             }
         } catch (e) {
             this.appContext.apis.notifications.show({
-                content: <ErrorNotification title='Unable to rollback application' e={e} />,
+                content: <ErrorNotification title='回滚失败' e={e} />,
                 type: NotificationType.Error
             });
         }

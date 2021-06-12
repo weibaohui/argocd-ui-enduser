@@ -47,7 +47,12 @@ export const Page = (props: PageProps) => {
     const ctx = React.useContext(Context);
     return (
         <div className={`${props.hideAuth ? 'page-wrapper' : ''}`}>
-            <ArgoPage title={props.title} children={props.children} toolbar={!props.hideAuth ? AddAuthToToolbar(props.toolbar, ctx) : props.toolbar} />
+            <ArgoPage
+                // title={props.title}
+                title={null}
+                children={props.children}
+                toolbar={!props.hideAuth ? AddAuthToToolbar(props.toolbar, ctx) : props.toolbar}
+            />
         </div>
     );
 };
