@@ -123,7 +123,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
                 content: <ApplicationSummary app={application} updateApp={app => updateApp(app)} />
             },
             {
-                title: 'PARAMETERS',
+                title: '参数',
                 key: 'parameters',
                 content: (
                     <DataLoader
@@ -140,7 +140,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
                 )
             },
             {
-                title: 'MANIFEST',
+                title: '定义清单',
                 key: 'manifest',
                 content: (
                     <YamlEditor
@@ -158,7 +158,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
         if (application.status.sync.status !== SyncStatuses.Synced) {
             tabs.push({
                 icon: 'fa fa-file-medical',
-                title: 'DIFF',
+                title: '差异对比',
                 key: 'diff',
                 content: (
                     <DataLoader
@@ -175,7 +175,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
         }
 
         tabs.push({
-            title: 'EVENTS',
+            title: '事件',
             key: 'event',
             content: <ApplicationResourceEvents applicationName={application.metadata.name} />
         });
