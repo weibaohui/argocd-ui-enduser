@@ -116,20 +116,20 @@ export class ApplicationDetails extends React.Component<RouteComponentProps<{nam
 
                             const filter: TopBarFilter<string> = {
                                 items: [
-                                    {content: () => <span>Sync</span>},
+                                    {content: () => <span>同步状态</span>},
                                     {value: 'sync:Synced', label: '已同步'},
                                     // Unhealthy includes 'Unknown' and 'OutOfSync'
-                                    {value: 'sync:OutOfSync', label: 'OutOfSync'},
-                                    {content: () => <span>Health</span>},
-                                    {value: 'health:Healthy', label: 'Healthy'},
-                                    {value: 'health:Progressing', label: 'Progressing'},
-                                    {value: 'health:Degraded', label: 'Degraded'},
-                                    {value: 'health:Missing', label: 'Missing'},
-                                    {value: 'health:Unknown', label: 'Unknown'},
+                                    {value: 'sync:OutOfSync', label: '未同步'},
+                                    {content: () => <span>健康状态</span>},
+                                    {value: 'health:Healthy', label: '健康'},
+                                    {value: 'health:Progressing', label: '自适应中'},
+                                    {value: 'health:Degraded', label: '降级'},
+                                    {value: 'health:Missing', label: '丢失'},
+                                    {value: 'health:Unknown', label: '未知'},
                                     {
                                         content: setSelection => (
                                             <div>
-                                                Kinds <a onClick={() => setSelection(noKindsFilter.concat(kinds.map(kind => `kind:${kind}`)))}>all</a> /{' '}
+                                                资源类型 <a onClick={() => setSelection(noKindsFilter.concat(kinds.map(kind => `kind:${kind}`)))}>all</a> /{' '}
                                                 <a onClick={() => setSelection(noKindsFilter)}>none</a>
                                             </div>
                                         )
@@ -349,7 +349,7 @@ export class ApplicationDetails extends React.Component<RouteComponentProps<{nam
                                                             </div>
                                                             <div className='white-box__details'>
                                                                 <div className='row white-box__details-row'>
-                                                                    <div className='columns small-3'>Date:</div>
+                                                                    <div className='columns small-3'>日期:</div>
                                                                     <div className='columns small-9'>
                                                                         <Timestamp date={metadata.date} />
                                                                     </div>
@@ -365,13 +365,13 @@ export class ApplicationDetails extends React.Component<RouteComponentProps<{nam
                                                             </div>
                                                             <div className='white-box__details'>
                                                                 <div className='row white-box__details-row'>
-                                                                    <div className='columns small-3'>Author:</div>
+                                                                    <div className='columns small-3'>作者:</div>
                                                                     <div className='columns small-9'>{metadata.author}</div>
                                                                 </div>
                                                             </div>
                                                             <div className='white-box__details'>
                                                                 <div className='row white-box__details-row'>
-                                                                    <div className='columns small-3'>Message:</div>
+                                                                    <div className='columns small-3'>说明:</div>
                                                                     <div className='columns small-9' style={{display: 'flex', alignItems: 'center'}}>
                                                                         <div className='application-details__commit-message'>{metadata.message}</div>
                                                                     </div>

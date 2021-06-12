@@ -596,19 +596,19 @@ const getOperationStateTitle = (app: appModels.Application) => {
     const operationType = getOperationType(app);
     switch (operationType) {
         case 'Delete':
-            return 'Deleting';
+            return '删除中';
         case 'Sync':
             switch (appOperationState.phase) {
                 case 'Running':
-                    return 'Syncing';
+                    return '同步中';
                 case 'Error':
-                    return 'Sync error';
+                    return '同步出错';
                 case 'Failed':
-                    return 'Sync failed';
+                    return '同步失败';
                 case 'Succeeded':
-                    return 'Sync OK';
+                    return '同步成功';
                 case 'Terminating':
-                    return 'Terminated';
+                    return '已终止';
             }
     }
     return 'Unknown';
