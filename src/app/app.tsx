@@ -5,16 +5,11 @@ import * as React from 'react';
 import {Helmet} from 'react-helmet';
 import {Redirect, Route, RouteComponentProps, Router, Switch} from 'react-router';
 import applications from './applications';
-import help from './help';
 import login from './login';
-import settings from './settings';
-import {VersionPanel} from './shared/components/version-info/version-info-panel';
 import {Provider} from './shared/context';
 import {services} from './shared/services';
 import requests from './shared/services/requests';
 import {hashCode} from './shared/utils';
-import {Banner} from './ui-banner/ui-banner';
-import userInfo from './user-info';
 
 services.viewPreferences.init();
 const bases = document.getElementsByTagName('base');
@@ -24,10 +19,7 @@ requests.setBaseHRef(base);
 
 const routes: {[path: string]: {component: React.ComponentType<RouteComponentProps<any>>; noLayout?: boolean}} = {
     '/login': {component: login.component as any, noLayout: true},
-    '/applications': {component: applications.component},
-    '/settings': {component: settings.component},
-    '/user-info': {component: userInfo.component},
-    '/help': {component: help.component}
+    '/applications': {component: applications.component, noLayout: true}
 };
 
 const navItems = [
@@ -35,21 +27,6 @@ const navItems = [
         title: 'Manage your applications, and diagnose health problems.',
         path: '/applications',
         iconClassName: 'argo-icon-application'
-    },
-    {
-        title: 'Manage your repositories, projects, settings',
-        path: '/settings',
-        iconClassName: 'argo-icon-settings'
-    },
-    {
-        title: 'User Info',
-        path: '/user-info',
-        iconClassName: 'fa fa-user-circle'
-    },
-    {
-        title: 'Read the documentation, and get help and assistance.',
-        path: '/help',
-        iconClassName: 'argo-icon-docs'
     }
 ];
 
@@ -145,14 +122,10 @@ export class App extends React.Component<{}, {popupProps: PopupProps; showVersio
     public render() {
         if (this.state.error != null) {
             const stack = this.state.error.stack;
-            const url = 'https://github.com/argoproj/argo-cd/issues/new?labels=bug&template=bug_report.md';
-
             return (
                 <React.Fragment>
                     <p>Something went wrong!</p>
-                    <p>
-                        Consider submitting an issue <a href={url}>here</a>.
-                    </p>
+                    <p>出错了.</p>
                     <br />
                     <p>Stacktrace:</p>
                     <pre>{stack}</pre>
@@ -202,9 +175,9 @@ export class App extends React.Component<{}, {popupProps: PopupProps; showVersio
                                                                 }}
                                                             </DataLoader>
                                                         )}>
-                                                        <Banner>
-                                                            <route.component {...routeProps} />
-                                                        </Banner>
+                                                        {/*<Banner>*/}
+                                                        {/*    <route.component {...routeProps} />*/}
+                                                        {/*</Banner>*/}
                                                     </Layout>
                                                 )
                                             }
@@ -229,7 +202,7 @@ export class App extends React.Component<{}, {popupProps: PopupProps; showVersio
                     </Provider>
                 </PageContext.Provider>
                 <Notifications notifications={this.notificationsManager.notifications} />
-                <VersionPanel version={versionLoader} isShown={this.state.showVersionPanel} onClose={() => this.setState({showVersionPanel: false})} />
+                {/*<VersionPanel version={versionLoader} isShown={this.state.showVersionPanel} onClose={() => this.setState({showVersionPanel: false})} />*/}
             </React.Fragment>
         );
     }
