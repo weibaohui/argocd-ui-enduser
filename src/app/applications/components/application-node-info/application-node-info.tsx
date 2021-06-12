@@ -17,7 +17,7 @@ export const ApplicationNodeInfo = (props: {
     controlled: {summary: models.ResourceStatus; state: models.ResourceDiff};
 }) => {
     const attributes: {title: string; value: any}[] = [
-        {title: 'KIND', value: props.node.kind},
+        {title: '资源类型', value: props.node.kind},
         {title: '名称', value: props.node.name},
         {title: '命名空间NS', value: props.node.namespace}
     ];
