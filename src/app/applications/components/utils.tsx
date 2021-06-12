@@ -237,7 +237,7 @@ export const deletePopup = async (ctx: ContextApis, resource: ResourceTreeNode, 
         deleteOptions.option = option;
     }
     return ctx.popup.prompt(
-        'Delete resource',
+        '删除资源',
         api => (
             <div>
                 <p>
@@ -267,7 +267,7 @@ export const deletePopup = async (ctx: ContextApis, resource: ResourceTreeNode, 
                         Force Delete {helpTip('Deletes the resource and its dependent resources in the background')}
                     </label>
                     <input type='radio' name='deleteOptions' value='orphan' onChange={() => handleStateChange('orphan')} style={{marginRight: '5px'}} />
-                    <label htmlFor='cascade-delete-radio'>Non-cascading (Orphan) Delete {helpTip('Deletes the resource and orphans the dependent resources')}</label>
+                    <label htmlFor='cascade-delete-radio'>Non-cascading (Orphan) Delete 不使用级联删除 {helpTip('Deletes the resource and orphans the dependent resources')}</label>
                 </div>
             </div>
         ),
@@ -315,13 +315,13 @@ export function renderResourceMenu(
         const items: MenuItem[] = [
             ...((isRoot && [
                 {
-                    title: 'Sync',
+                    title: '同步',
                     action: () => showDeploy(nodeKey(resource), appContext)
                 }
             ]) ||
                 []),
             {
-                title: 'Delete',
+                title: '删除',
                 action: async () => {
                     return deletePopup(appContext.apis, resource, application, appChanged);
                 }
@@ -329,7 +329,7 @@ export function renderResourceMenu(
         ];
         if (findChildPod(resource, tree)) {
             items.push({
-                title: 'Logs',
+                title: '日志',
                 action: () => appContext.apis.navigation.goto('.', {node: nodeKey(resource), tab: 'logs'})
             });
         }

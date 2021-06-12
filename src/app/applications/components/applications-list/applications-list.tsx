@@ -311,7 +311,7 @@ export const ApplicationsList = (props: RouteComponentProps<{}>) => {
             <KeybindingProvider>
                 <Consumer>
                     {ctx => (
-                        <Page title='Applications' toolbar={{breadcrumbs: [{title: 'Applications', path: '/applications'}]}} hideAuth={true}>
+                        <Page title='应用管理' toolbar={{breadcrumbs: [{title: '应用管理', path: '/applications'}]}} hideAuth={true}>
                             <DataLoader
                                 ref={loaderRef}
                                 load={() => AppUtils.handlePageVisibility(() => loadApplications())}
@@ -358,13 +358,13 @@ export const ApplicationsList = (props: RouteComponentProps<{}>) => {
                                                 actionMenu: {
                                                     items: [
                                                         {
-                                                            title: 'New App',
+                                                            title: '新建应用',
                                                             iconClassName: 'fa fa-plus',
                                                             qeId: 'applications-list-button-new-app',
                                                             action: () => ctx.navigation.goto('.', {new: '{}'})
                                                         },
                                                         {
-                                                            title: 'Sync Apps',
+                                                            title: '同步应用',
                                                             iconClassName: 'fa fa-sync',
                                                             action: () => ctx.navigation.goto('.', {syncApps: true})
                                                         }
@@ -378,8 +378,8 @@ export const ApplicationsList = (props: RouteComponentProps<{}>) => {
                                                     const filteredApps = filterApps(applications, pref, pref.search);
                                                     return applications.length === 0 && (pref.labelsFilter || []).length === 0 ? (
                                                         <EmptyState icon='argo-icon-application'>
-                                                            <h4>No applications yet</h4>
-                                                            <h5>Create new application to start managing resources in your cluster</h5>
+                                                            <h4>还没有应用</h4>
+                                                            <h5>创建一个应用吧</h5>
                                                             <button
                                                                 qe-id='applications-list-button-create-application'
                                                                 className='argo-button argo-button--base'

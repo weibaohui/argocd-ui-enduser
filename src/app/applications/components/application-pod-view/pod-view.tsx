@@ -54,7 +54,7 @@ export class PodView extends React.Component<PodViewProps> {
                         <React.Fragment>
                             <div className='pod-view__settings'>
                                 <div className='pod-view__settings__section'>
-                                    GROUP BY:&nbsp;
+                                    展示分类:&nbsp;
                                     <DropDownMenu
                                         anchor={() => (
                                             <button className='argo-button argo-button--base-o'>
@@ -76,7 +76,7 @@ export class PodView extends React.Component<PodViewProps> {
                                                 })
                                             }>
                                             <i className={`fa fa-${podPrefs.hideUnschedulable ? 'eye-slash' : 'eye'}`} style={{marginRight: '5px'}} />
-                                            UNSCHEDULABLE
+                                            调度状态
                                         </button>
                                     </div>
                                 )}
@@ -162,7 +162,7 @@ export class PodView extends React.Component<PodViewProps> {
                                                                             content={
                                                                                 <div>
                                                                                     {pod.metadata.name}
-                                                                                    <div>Health: {pod.health}</div>
+                                                                                    <div>健康状态: {pod.health}</div>
                                                                                 </div>
                                                                             }
                                                                             popperOptions={{
@@ -185,7 +185,7 @@ export class PodView extends React.Component<PodViewProps> {
                                                                         {
                                                                             title: (
                                                                                 <React.Fragment>
-                                                                                    <i className='fa fa-info-circle' /> Info
+                                                                                    <i className='fa fa-info-circle' /> 概览
                                                                                 </React.Fragment>
                                                                             ),
                                                                             action: () => this.props.onItemClick(pod.fullName)
@@ -193,7 +193,7 @@ export class PodView extends React.Component<PodViewProps> {
                                                                         {
                                                                             title: (
                                                                                 <React.Fragment>
-                                                                                    <i className='fa fa-align-left' /> Logs
+                                                                                    <i className='fa fa-align-left' /> 日志
                                                                                 </React.Fragment>
                                                                             ),
                                                                             action: () => {
@@ -203,18 +203,18 @@ export class PodView extends React.Component<PodViewProps> {
                                                                         {
                                                                             title: (
                                                                                 <React.Fragment>
-                                                                                    <i className='fa fa-trash' /> Delete
+                                                                                    <i className='fa fa-trash' /> 删除
                                                                                 </React.Fragment>
                                                                             ),
                                                                             action: async () => {
                                                                                 this.appContext.apis.popup.prompt(
-                                                                                    'Delete pod',
+                                                                                    '删除POD',
                                                                                     () => (
                                                                                         <div>
-                                                                                            <p>Are your sure you want to delete Pod '{pod.name}'?</p>
+                                                                                            <p>你确定要删除 '{pod.name}'?</p>
                                                                                             <div className='argo-form-row' style={{paddingLeft: '30px'}}>
                                                                                                 <ReactCheckbox id='force-delete-checkbox' field='force' />
-                                                                                                <label htmlFor='force-delete-checkbox'>Force delete</label>
+                                                                                                <label htmlFor='force-delete-checkbox'>强制删除</label>
                                                                                             </div>
                                                                                         </div>
                                                                                     ),
@@ -230,7 +230,7 @@ export class PodView extends React.Component<PodViewProps> {
                                                                                                 close();
                                                                                             } catch (e) {
                                                                                                 this.appContext.apis.notifications.show({
-                                                                                                    content: <ErrorNotification title='Unable to delete resource' e={e} />,
+                                                                                                    content: <ErrorNotification title='无法删除' e={e} />,
                                                                                                     type: NotificationType.Error
                                                                                                 });
                                                                                             }
@@ -295,8 +295,8 @@ export class PodView extends React.Component<PodViewProps> {
                     name: nodeName,
                     pods: [],
                     info: [
-                        {name: 'Kernel Version', value: infraNode.systemInfo.kernelVersion},
-                        {name: 'OS/Arch', value: `${infraNode.systemInfo.operatingSystem}/${infraNode.systemInfo.architecture}`}
+                        {name: 'OS内核', value: infraNode.systemInfo.kernelVersion},
+                        {name: '操作系统', value: `${infraNode.systemInfo.operatingSystem}/${infraNode.systemInfo.architecture}`}
                     ],
                     hostResourcesInfo: infraNode.resourcesInfo
                 };
@@ -400,9 +400,9 @@ export class PodView extends React.Component<PodViewProps> {
 }
 
 const labelForSortMode = {
-    node: 'Node',
-    parentResource: 'Parent Resource',
-    topLevelResource: 'Top Level Resource'
+    node: '节点',
+    parentResource: '父定义',
+    topLevelResource: '源定义'
 };
 
 const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
@@ -436,7 +436,7 @@ function renderStats(info: HostResourceInfo) {
                     <React.Fragment>
                         <div>{info.resourceName.toUpperCase()}:</div>
                         <div className='pod-view__node__pod__stat-tooltip'>
-                            <div>Requests:</div>
+                            <div>配额:</div>
                             <div>
                                 {' '}
                                 <i className='pod-view__node__pod__stat-icon-app' /> {formatMetric(info.resourceName, info.requestedByApp)} (App)
@@ -445,7 +445,7 @@ function renderStats(info: HostResourceInfo) {
                                 {' '}
                                 <i className='pod-view__node__pod__stat-icon-neighbors' /> {formatMetric(info.resourceName, info.requestedByNeighbors)} (Neighbors)
                             </div>
-                            <div>Capacity: {formatMetric(info.resourceName, info.capacity)}</div>
+                            <div>限额: {formatMetric(info.resourceName, info.capacity)}</div>
                         </div>
                     </React.Fragment>
                 }>

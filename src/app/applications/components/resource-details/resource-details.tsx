@@ -118,7 +118,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
     const getApplicationTabs = () => {
         const tabs: Tab[] = [
             {
-                title: 'SUMMARY',
+                title: '概览',
                 key: 'summary',
                 content: <ApplicationSummary app={application} updateApp={app => updateApp(app)} />
             },
