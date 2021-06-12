@@ -401,6 +401,12 @@ export class ApplicationDetails extends React.Component<RouteComponentProps<{nam
                 action: () => AppUtils.showDeploy('all', this.appContext)
             },
             {
+                iconClassName: 'fa fa-history',
+                title: <span className='show-for-large'>历史记录</span>,
+                action: () => this.setRollbackPanelVisible(0),
+                disabled: !app.status.operationState
+            },
+            {
                 iconClassName: 'fa fa-info-circle',
                 title: <span className='show-for-large'>同步状态</span>,
                 action: () => this.setOperationStatusVisible(true),

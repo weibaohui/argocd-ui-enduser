@@ -24,7 +24,7 @@ export const RevisionMetadataRows = (props: {applicationName: string; source: Ap
             {(m: RevisionMetadata) => (
                 <div>
                     <div className='row'>
-                        <div className='columns small-3'>Authored by</div>
+                        <div className='columns small-3'>作者</div>
                         <div className='columns small-9'>
                             {m.author || 'unknown'}
                             <br />
@@ -37,10 +37,10 @@ export const RevisionMetadataRows = (props: {applicationName: string; source: Ap
                             <div className='columns small-9'>{m.message.split('\n')[0].slice(0, 64)}</div>
                         </div>
                     )}
-                    <div className='row'>
-                        <div className='columns small-3'>GPG signature</div>
-                        <div className='columns small-9'>{m.signatureInfo || '-'}</div>
-                    </div>
+                    {/*<div className='row'>*/}
+                    {/*    <div className='columns small-3'>GPG signature</div>*/}
+                    {/*    <div className='columns small-9'>{m.signatureInfo || '-'}</div>*/}
+                    {/*</div>*/}
                 </div>
             )}
         </DataLoader>

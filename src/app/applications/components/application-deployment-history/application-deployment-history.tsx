@@ -1,10 +1,11 @@
-import {DataLoader, DropDownMenu, Duration} from 'argo-ui';
+import {Duration} from 'argo-ui';
+// import {DataLoader, Duration} from 'argo-ui';
 import * as moment from 'moment';
 import * as React from 'react';
 import {Revision, Timestamp} from '../../../shared/components';
 import * as models from '../../../shared/models';
-import {services} from '../../../shared/services';
-import {ApplicationParameters} from '../application-parameters/application-parameters';
+// import {services} from '../../../shared/services';
+// import {ApplicationParameters} from '../application-parameters/application-parameters';
 import {RevisionMetadataRows} from './revision-metadata-rows';
 
 require('./application-deployment-history.scss');
@@ -33,43 +34,28 @@ export const ApplicationDeploymentHistory = ({
                 <div className='row application-deployment-history__item' key={info.deployedAt} onClick={() => selectDeployment(index)}>
                     <div className='columns small-3'>
                         <div>
-                            <i className='fa fa-clock' /> Deployed At:
+                            <i className='fa fa-clock' /> 部署时间:
                             <br />
                             <Timestamp date={info.deployedAt} />
                         </div>
                         <div>
                             <br />
-                            <i className='fa fa-hourglass-half' /> Time to deploy:
+                            <i className='fa fa-hourglass-half' /> 耗时:
                             <br />
                             {(info.deployStartedAt && <Duration durationMs={moment(info.deployedAt).diff(moment(info.deployStartedAt)) / 1000} />) || 'Unknown'}
                         </div>
                         <div>
                             <br />
-                            Active for:
+                            存活时间:
                             <br />
                             <Duration durationMs={info.durationMs} />
                         </div>
                     </div>
                     <div className='columns small-9'>
                         <div className='row'>
-                            <div className='columns small-3'>Revision:</div>
+                            <div className='columns small-3'>版本:</div>
                             <div className='columns small-9'>
                                 <Revision repoUrl={info.source.repoURL} revision={info.revision} />
-                                <div className='application-deployment-history__item-menu'>
-                                    <DropDownMenu
-                                        anchor={() => (
-                                            <button className='argo-button argo-button--light argo-button--lg argo-button--short'>
-                                                <i className='fa fa-ellipsis-v' />
-                                            </button>
-                                        )}
-                                        items={[
-                                            {
-                                                title: (info.nextDeployedAt && 'Rollback') || 'Redeploy',
-                                                action: () => rollbackApp(info)
-                                            }
-                                        ]}
-                                    />
-                                </div>
                             </div>
                         </div>
                         {selectedRollbackDeploymentIndex === index ? (
@@ -78,21 +64,21 @@ export const ApplicationDeploymentHistory = ({
                                     applicationName={app.metadata.name}
                                     source={{...recentDeployments[index].source, targetRevision: recentDeployments[index].revision}}
                                 />
-                                <DataLoader
-                                    input={{...recentDeployments[index].source, targetRevision: recentDeployments[index].revision, appName: app.metadata.name}}
-                                    load={src => services.repos.appDetails(src, src.appName)}>
-                                    {(details: models.RepoAppDetails) => (
-                                        <div>
-                                            <ApplicationParameters
-                                                application={{
-                                                    ...app,
-                                                    spec: {...app.spec, source: recentDeployments[index].source}
-                                                }}
-                                                details={details}
-                                            />
-                                        </div>
-                                    )}
-                                </DataLoader>
+                                {/*<DataLoader*/}
+                                {/*    input={{...recentDeployments[index].source, targetRevision: recentDeployments[index].revision, appName: app.metadata.name}}*/}
+                                {/*    load={src => services.repos.appDetails(src, src.appName)}>*/}
+                                {/*    {(details: models.RepoAppDetails) => (*/}
+                                {/*        <div>*/}
+                                {/*            <ApplicationParameters*/}
+                                {/*                application={{*/}
+                                {/*                    ...app,*/}
+                                {/*                    spec: {...app.spec, source: recentDeployments[index].source}*/}
+                                {/*                }}*/}
+                                {/*                details={details}*/}
+                                {/*            />*/}
+                                {/*        </div>*/}
+                                {/*    )}*/}
+                                {/*</DataLoader>*/}
                             </React.Fragment>
                         ) : null}
                     </div>
