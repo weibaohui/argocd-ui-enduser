@@ -35,7 +35,7 @@ const sectionHeader = (info: SectionInfo, onClick?: () => any) => {
             {sectionLabel(info)}
             {onClick && (
                 <button className='argo-button argo-button--base-o argo-button--sm application-status-panel__more-button' onClick={onClick}>
-                    MORE
+                    更多
                 </button>
             )}
         </div>
@@ -67,7 +67,7 @@ export const ApplicationStatusPanel = ({application, showOperation, showConditio
     return (
         <div className='application-status-panel row'>
             <div className='application-status-panel__item'>
-                {sectionLabel({title: '应用健康', helpContent: 'The health status of your app'})}
+                {sectionLabel({title: '体检', helpContent: '应用健康状态'})}
                 <div className='application-status-panel__item-value'>
                     <HealthStatusIcon state={application.status.health} />
                     &nbsp;
@@ -80,7 +80,7 @@ export const ApplicationStatusPanel = ({application, showOperation, showConditio
                     {sectionHeader(
                         {
                             title: '当前同步状态',
-                            helpContent: 'Whether or not the version of your app is up to date with your repo. You may wish to sync your app if it is out-of-sync.'
+                            helpContent: '您的应用程序版本是否与您的存储库保持同步。如果应用程序不同步，您可能希望同步它。'
                         },
                         application.spec.source.chart ? null : () => showMetadataInfo(application.status.sync ? application.status.sync.revision : '')
                     )}
@@ -102,11 +102,8 @@ export const ApplicationStatusPanel = ({application, showOperation, showConditio
                     <React.Fragment>
                         {sectionHeader(
                             {
-                                title: 'LAST SYNC RESULT',
-                                helpContent:
-                                    'Whether or not your last app sync was successful. It has been ' +
-                                    daysSinceLastSynchronized +
-                                    ' days since last sync. Click for the status of that sync.'
+                                title: '终态',
+                                helpContent: '应用上次同步是在' + daysSinceLastSynchronized + '天以前，单击查看最新状态.'
                             },
                             application.spec.source.chart ? null : () => showMetadataInfo(appOperationState.syncResult ? appOperationState.syncResult.revision : '')
                         )}
@@ -136,7 +133,7 @@ export const ApplicationStatusPanel = ({application, showOperation, showConditio
             )}
             {application.status.conditions && (
                 <div className={`application-status-panel__item`}>
-                    {sectionLabel({title: 'APP CONDITIONS'})}
+                    {sectionLabel({title: '应用自适应'})}
                     <div className='application-status-panel__item-value application-status-panel__conditions' onClick={() => showConditions && showConditions()}>
                         {infos && (
                             <a className='info'>
@@ -167,12 +164,8 @@ export const ApplicationStatusPanel = ({application, showOperation, showConditio
                         {data.assignedWindows && (
                             <div className='application-status-panel__item' style={{position: 'relative'}}>
                                 {sectionLabel({
-                                    title: 'SYNC WINDOWS',
-                                    helpContent:
-                                        'The aggregate state of sync windows for this app. ' +
-                                        'Red: no syncs allowed. ' +
-                                        'Yellow: manual syncs allowed. ' +
-                                        'Green: all syncs allowed'
+                                    title: '同步指示',
+                                    helpContent: '此应用程序的同步状态。 红色: 不允许同步. 黄色: 允许手动同步. 绿色: 允许所有同步'
                                 })}
                                 <div className='application-status-panel__item-value' style={{margin: 'auto 0'}}>
                                     <ApplicationSyncWindowStatusIcon project={application.spec.project} state={data} />
