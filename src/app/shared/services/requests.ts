@@ -70,7 +70,11 @@ export default {
     loadEventSource(url: string): Observable<string> {
         return Observable.create((observer: Observer<any>) => {
             let eventSource = new EventSource(`${apiRoot()}${url}`);
-            eventSource.onmessage = msg => observer.next(msg.data);
+            eventSource.onmessage = msg => {
+                // todo 处理一下
+                // console.log('记录了一个msg', msg);
+                observer.next(msg.data);
+            };
             eventSource.onerror = e => () => {
                 observer.error(e);
                 onError.next(e);
