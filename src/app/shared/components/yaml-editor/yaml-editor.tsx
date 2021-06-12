@@ -9,6 +9,7 @@ import {MonacoEditor} from '../monaco-editor';
 const jsonMergePatch = require('json-merge-patch');
 require('./yaml-editor.scss');
 
+// hideModeButtons:是否显示编辑按钮
 export class YamlEditor<T> extends React.Component<
     {
         input: T;

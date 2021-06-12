@@ -10,15 +10,15 @@ export const EventsList = (props: {events: models.Event[]}) => {
 
     return (
         <div className='events-list'>
-            {(events.length === 0 && <p>No events available</p>) || (
+            {(events.length === 0 && <p>暂无事件</p>) || (
                 <div className='argo-table-list'>
                     <div className='argo-table-list__head'>
                         <div className='row'>
-                            <div className='columns small-2'>REASON</div>
-                            <div className='columns small-5'>MESSAGE</div>
-                            <div className='columns small-1'>COUNT</div>
-                            <div className='columns small-2'>FIRST OCCURRED</div>
-                            <div className='columns small-2'>LAST OCCURRED</div>
+                            <div className='columns small-2'>原因</div>
+                            <div className='columns small-5'>描述</div>
+                            <div className='columns small-1'>次数</div>
+                            <div className='columns small-2'>第一次</div>
+                            <div className='columns small-2'>最后一次</div>
                         </div>
                     </div>
                     {events.map(event => (

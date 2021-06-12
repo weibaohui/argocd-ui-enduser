@@ -45,7 +45,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
         if (state) {
             const numErrors = events.filter(event => event.type !== 'Normal').reduce((total, event) => total + event.count, 0);
             tabs.push({
-                title: 'EVENTS',
+                title: '事件',
                 icon: 'fa fa-calendar-alt',
                 badge: (numErrors > 0 && numErrors) || null,
                 key: 'events',
@@ -60,12 +60,12 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
             const containerGroups = [
                 {
                     offset: 0,
-                    title: 'CONTAINERS',
+                    title: '容器',
                     containers: podState.spec.containers || []
                 },
                 {
                     offset: (podState.spec.containers || []).length,
-                    title: 'INIT CONTAINERS',
+                    title: '初始容器',
                     containers: podState.spec.initContainers || []
                 }
             ];
@@ -73,7 +73,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
                 {
                     key: 'logs',
                     icon: 'fa fa-align-left',
-                    title: 'LOGS',
+                    title: '日志',
                     content: (
                         <div className='application-details__tab-content-full-height'>
                             <div className='row'>
