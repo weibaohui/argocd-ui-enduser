@@ -19,10 +19,10 @@ export const ApplicationResourceList = ({
         <div className='argo-table-list__head'>
             <div className='row'>
                 <div className='columns small-1 xxxlarge-1' />
-                <div className='columns small-2 xxxlarge-2'>NAME</div>
+                <div className='columns small-2 xxxlarge-2'>名称</div>
                 <div className='columns small-3 xxxlarge-4'>GROUP/KIND</div>
-                <div className='columns small-3 xxxlarge-3'>NAMESPACE</div>
-                <div className='columns small-2 xxxlarge-2'>STATUS</div>
+                <div className='columns small-3 xxxlarge-3'>命名空间</div>
+                <div className='columns small-2 xxxlarge-2'>状态</div>
             </div>
         </div>
         {resources

@@ -396,11 +396,6 @@ export class ApplicationDetails extends React.Component<RouteComponentProps<{nam
         const fullName = AppUtils.nodeKey({group: 'argoproj.io', kind: app.kind, name: app.metadata.name, namespace: app.metadata.namespace});
         return [
             {
-                iconClassName: 'fa fa-info-circle',
-                title: <span className='show-for-large'>应用详情</span>,
-                action: () => this.selectNode(fullName)
-            },
-            {
                 iconClassName: 'fa fa-file-medical',
                 title: <span className='show-for-large'>应用版本</span>,
                 action: () => this.selectNode(fullName, 0, 'diff'),

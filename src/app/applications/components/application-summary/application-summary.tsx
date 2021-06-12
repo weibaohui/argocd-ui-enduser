@@ -36,7 +36,7 @@ export const ApplicationSummary = (props: {app: models.Application; updateApp: (
     const [changeSync, setChangeSync] = React.useState(false);
     const attributes = [
         {
-            title: 'PROJECT',
+            title: '项目',
             view: <a href={'/settings/projects/' + app.spec.project}>{app.spec.project}</a>,
             edit: (formApi: FormApi) => (
                 <DataLoader load={() => services.projects.list('items.metadata.name').then(projs => projs.map(item => item.metadata.name))}>
@@ -63,7 +63,7 @@ export const ApplicationSummary = (props: {app: models.Application; updateApp: (
             edit: (formApi: FormApi) => <FormField formApi={formApi} field='metadata.annotations' component={MapInputField} />
         },
         {
-            title: 'CLUSTER',
+            title: '集群',
             view: <Cluster server={app.spec.destination.server} name={app.spec.destination.name} showUrl={true} />,
             edit: (formApi: FormApi) => (
                 <DataLoader load={() => services.clusters.list().then(clusters => clusters.sort())}>

@@ -1,24 +1,17 @@
 import {DataLoader, Tab, Tabs} from 'argo-ui';
 import * as React from 'react';
-import {EventsList, YamlEditor} from '../../../shared/components';
+import {EventsList} from '../../../shared/components';
 import {Context} from '../../../shared/context';
-import {Application, ApplicationTree, AppSourceType, Event, RepoAppDetails, ResourceNode, State, SyncStatuses} from '../../../shared/models';
+import {Application, ApplicationTree, Event, ResourceNode, State} from '../../../shared/models';
 import {services} from '../../../shared/services';
 import {NodeInfo, SelectNode} from '../application-details/application-details';
 import {ApplicationNodeInfo} from '../application-node-info/application-node-info';
-import {ApplicationParameters} from '../application-parameters/application-parameters';
-import {ApplicationResourceEvents} from '../application-resource-events/application-resource-events';
 import {ResourceTreeNode} from '../application-resource-tree/application-resource-tree';
-import {ApplicationResourcesDiff} from '../application-resources-diff/application-resources-diff';
-import {ApplicationSummary} from '../application-summary/application-summary';
 import {PodsLogsViewer} from '../pod-logs-viewer/pod-logs-viewer';
 import {ResourceIcon} from '../resource-icon';
 import {ResourceLabel} from '../resource-label';
 import * as AppUtils from '../utils';
 import './resource-details.scss';
-
-const jsonMergePatch = require('json-merge-patch');
-
 interface ResourceDetailsProps {
     selectedNode: ResourceNode;
     updateApp: (app: Application) => Promise<any>;
@@ -29,7 +22,7 @@ interface ResourceDetailsProps {
 }
 
 export const ResourceDetails = (props: ResourceDetailsProps) => {
-    const {selectedNode, updateApp, application, isAppSelected, tree} = {...props};
+    const {selectedNode, application, isAppSelected, tree} = {...props};
     const appContext = React.useContext(Context);
     const tab = new URLSearchParams(appContext.history.location.search).get('tab');
     const selectedNodeInfo = NodeInfo(new URLSearchParams(appContext.history.location.search).get('node'));
@@ -116,70 +109,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
     };
 
     const getApplicationTabs = () => {
-        const tabs: Tab[] = [
-            {
-                title: '概览',
-                key: 'summary',
-                content: <ApplicationSummary app={application} updateApp={app => updateApp(app)} />
-            },
-            {
-                title: '参数',
-                key: 'parameters',
-                content: (
-                    <DataLoader
-                        key='appDetails'
-                        input={application}
-                        load={app =>
-                            services.repos.appDetails(app.spec.source, app.metadata.name).catch(() => ({
-                                type: 'Directory' as AppSourceType,
-                                path: application.spec.source.path
-                            }))
-                        }>
-                        {(details: RepoAppDetails) => <ApplicationParameters save={app => updateApp(app)} application={application} details={details} />}
-                    </DataLoader>
-                )
-            },
-            {
-                title: '定义清单',
-                key: 'manifest',
-                content: (
-                    <YamlEditor
-                        minHeight={800}
-                        input={application.spec}
-                        onSave={async patch => {
-                            const spec = JSON.parse(JSON.stringify(application.spec));
-                            return services.applications.updateSpec(application.metadata.name, jsonMergePatch.apply(spec, JSON.parse(patch)));
-                        }}
-                    />
-                )
-            }
-        ];
-
-        if (application.status.sync.status !== SyncStatuses.Synced) {
-            tabs.push({
-                icon: 'fa fa-file-medical',
-                title: '差异对比',
-                key: 'diff',
-                content: (
-                    <DataLoader
-                        key='diff'
-                        load={async () =>
-                            await services.applications.managedResources(application.metadata.name, {
-                                fields: ['items.normalizedLiveState', 'items.predictedLiveState', 'items.group', 'items.kind', 'items.namespace', 'items.name']
-                            })
-                        }>
-                        {managedResources => <ApplicationResourcesDiff states={managedResources} />}
-                    </DataLoader>
-                )
-            });
-        }
-
-        tabs.push({
-            title: '事件',
-            key: 'event',
-            content: <ApplicationResourceEvents applicationName={application.metadata.name} />
-        });
-
+        const tabs: Tab[] = [];
         return tabs;
     };
 
