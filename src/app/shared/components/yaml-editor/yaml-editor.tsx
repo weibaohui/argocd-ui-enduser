@@ -59,7 +59,7 @@ export class YamlEditor<T> extends React.Component<
                                                 }
                                             }}
                                             className='argo-button argo-button--base'>
-                                            Save
+                                            保存
                                         </button>{' '}
                                         <button
                                             onClick={() => {
@@ -70,14 +70,14 @@ export class YamlEditor<T> extends React.Component<
                                                 }
                                             }}
                                             className='argo-button argo-button--base-o'>
-                                            Cancel
+                                            取消
                                         </button>
                                     </React.Fragment>
                                 )}
                             </Consumer>
                         )) || (
                             <button onClick={() => this.setState({editing: true})} className='argo-button argo-button--base'>
-                                Edit
+                                编辑
                             </button>
                         )}
                     </div>
