@@ -407,11 +407,6 @@ export class ApplicationDetails extends React.Component<RouteComponentProps<{nam
                 disabled: !app.status.operationState
             },
             {
-                iconClassName: 'fa fa-times-circle',
-                title: <span className='show-for-large'>删除</span>,
-                action: () => this.deleteApplication()
-            },
-            {
                 iconClassName: classNames('fa fa-redo', {'status-icon--spin': !!refreshing}),
                 title: (
                     <React.Fragment>
@@ -578,9 +573,5 @@ Are you sure you want to disable auto-sync and rollback application '${this.prop
 
     private get appContext(): AppContext {
         return this.context as AppContext;
-    }
-
-    private async deleteApplication() {
-        await AppUtils.deleteApplication(this.props.match.params.name, this.appContext.apis);
     }
 }
