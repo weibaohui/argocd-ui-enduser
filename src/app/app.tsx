@@ -1,4 +1,4 @@
-import {DataLoader, Layout, NavigationManager, Notifications, NotificationsManager, PageContext, Popup, PopupManager, PopupProps, Tooltip} from 'argo-ui';
+import {DataLoader, Layout, NavigationManager, Notifications, NotificationsManager, PageContext, Popup, PopupManager, PopupProps} from 'argo-ui';
 import {createBrowserHistory} from 'history';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
@@ -30,7 +30,7 @@ const navItems = [
     }
 ];
 
-const versionLoader = services.version.version();
+// const versionLoader = services.version.version();
 
 async function isExpiredSSO() {
     try {
@@ -157,28 +157,7 @@ export class App extends React.Component<{}, {popupProps: PopupProps; showVersio
                                                         <route.component {...routeProps} />
                                                     </div>
                                                 ) : (
-                                                    <Layout
-                                                        navItems={navItems}
-                                                        version={() => (
-                                                            <DataLoader load={() => versionLoader}>
-                                                                {version => {
-                                                                    const versionString = version ? version.Version : 'Unknown';
-                                                                    return (
-                                                                        <React.Fragment>
-                                                                            <Tooltip content={versionString}>
-                                                                                <a style={{color: 'white'}} onClick={() => this.setState({showVersionPanel: true})}>
-                                                                                    {versionString}
-                                                                                </a>
-                                                                            </Tooltip>
-                                                                        </React.Fragment>
-                                                                    );
-                                                                }}
-                                                            </DataLoader>
-                                                        )}>
-                                                        {/*<Banner>*/}
-                                                        {/*    <route.component {...routeProps} />*/}
-                                                        {/*</Banner>*/}
-                                                    </Layout>
+                                                    <Layout navItems={navItems}></Layout>
                                                 )
                                             }
                                         />

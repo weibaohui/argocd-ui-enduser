@@ -24,13 +24,13 @@ export class ApplicationsService {
             .query({project: projects, ...optionsToSearch(options)})
             .then(res => res.body as models.ApplicationList)
             .then(list => {
-                list.items = (list.items || []).map(app => this.parseAppFields(app));
+                list.items = (list.items || []).map(app => this.parseAppFieldsWithQuery(app, projects, options));
                 return list;
             });
     }
 
     public get(name: string, refresh?: 'normal' | 'hard'): Promise<models.Application> {
-        const query: {[key: string]: string} = {};
+        const query: { [key: string]: string } = {};
         if (refresh) {
             query.refresh = refresh;
         }
@@ -59,7 +59,7 @@ export class ApplicationsService {
         return requests.loadEventSource(`/stream/applications/${name}/resource-tree`).map(data => JSON.parse(data).result as models.ApplicationTree);
     }
 
-    public managedResources(name: string, options: {id?: models.ResourceID; fields?: string[]} = {}): Promise<models.ResourceDiff[]> {
+    public managedResources(name: string, options: { id?: models.ResourceID; fields?: string[] } = {}): Promise<models.ResourceDiff[]> {
         return requests
             .get(`/applications/${name}/managed-resources`)
             .query({...options.id, fields: (options.fields || []).join(',')})
@@ -127,7 +127,7 @@ export class ApplicationsService {
             .then(() => true);
     }
 
-    public watch(query?: {name?: string; resourceVersion?: string}, options?: QueryOptions): Observable<models.ApplicationWatchEvent> {
+    public watch(query?: { name?: string; resourceVersion?: string }, options?: QueryOptions): Observable<models.ApplicationWatchEvent> {
         const search = new URLSearchParams();
         if (query) {
             if (query.name) {
@@ -177,7 +177,7 @@ export class ApplicationsService {
             .then(() => true);
     }
 
-    public getDownloadLogsURL(applicationName: string, namespace: string, podName: string, resource: {group: string; kind: string; name: string}, containerName: string): string {
+    public getDownloadLogsURL(applicationName: string, namespace: string, podName: string, resource: { group: string; kind: string; name: string }, containerName: string): string {
         const search = this.getLogsQuery(namespace, podName, resource, containerName, null, false);
         search.set('download', 'true');
         return `/api/v1/applications/${applicationName}/logs?${search.toString()}`;
@@ -187,7 +187,7 @@ export class ApplicationsService {
         applicationName: string,
         namespace: string,
         podName: string,
-        resource: {group: string; kind: string; name: string},
+        resource: { group: string; kind: string; name: string },
         containerName: string,
         tail?: number,
         follow?: boolean,
@@ -233,7 +233,7 @@ export class ApplicationsService {
                 kind: resource.kind,
                 group: resource.group
             })
-            .then(res => res.body as {manifest: string})
+            .then(res => res.body as { manifest: string })
             .then(res => JSON.parse(res.manifest) as models.State);
     }
 
@@ -277,7 +277,7 @@ export class ApplicationsService {
                 patchType
             })
             .send(JSON.stringify(patch))
-            .then(res => res.body as {manifest: string})
+            .then(res => res.body as { manifest: string })
             .then(res => JSON.parse(res.manifest) as models.State);
     }
 
@@ -334,7 +334,7 @@ export class ApplicationsService {
     private getLogsQuery(
         namespace: string,
         podName: string,
-        resource: {group: string; kind: string; name: string},
+        resource: { group: string; kind: string; name: string },
         containerName: string,
         tail?: number,
         follow?: boolean,
@@ -370,6 +370,28 @@ export class ApplicationsService {
     }
 
     private parseAppFields(data: any): models.Application {
+        data = deepMerge(
+            {
+                apiVersion: 'argoproj.io/v1alpha1',
+                kind: 'Application',
+                spec: {
+                    project: 'default'
+                },
+                status: {
+                    resources: [],
+                    summary: {}
+                }
+            },
+            data
+        );
+
+        return data as models.Application;
+    }
+
+    private parseAppFieldsWithQuery(data: any, projects: any, options: any): models.Application {
+        console.log('Parsing1',projects,options)
+        console.log('Parsing2',projects,options)
+        console.log('Parsing3',projects,options)
         data = deepMerge(
             {
                 apiVersion: 'argoproj.io/v1alpha1',
