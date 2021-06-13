@@ -149,7 +149,7 @@ export class ApplicationsService {
             .repeat()
             .retry()
             .map(data => JSON.parse(data).result as models.ApplicationWatchEvent)
-            .filter(watch => watch.application.metadata.name === searchStr)
+            .filter(watchEvent => watchEvent.application.metadata.name === searchStr)
             .map(watchEvent => {
                 // 去除其他的应用
                 watchEvent.application = this.parseAppFields(watchEvent.application);
